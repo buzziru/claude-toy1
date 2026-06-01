@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>할 일 목록</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --bg-accent: #e9efff;
+    --card: #ffffff;
+    --line: #e3e6ea;
+    --line-strong: #d5dae3;
+    --text: #2b2f36;
+    --muted: #8a9099;
+    --accent: #4c7dff;
+    --accent-dark: #3465e8;
+    --accent-soft: #eef3ff;
+    --overdue: #e5484d;
+    --shadow: 0 18px 45px rgba(32, 45, 75, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+    background:
+      radial-gradient(circle at top left, var(--bg-accent), transparent 34%),
+      var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 48px 16px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .app-header {
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0 0 6px;
+    letter-spacing: -0.03em;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .add-form {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(227, 230, 234, 0.9);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+  }
+
+  .add-form input[type="text"] {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+
+  input, button {
+    font: inherit;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease;
+  }
+
+  input::placeholder {
+    color: #a6abb4;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(76, 125, 255, 0.16);
+  }
+
+  button.add {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    cursor: pointer;
+    font-weight: 700;
+    padding-inline: 16px;
+  }
+
+  button.add:hover {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    transform: translateY(-1px);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    box-shadow: 0 8px 24px rgba(32, 45, 75, 0.05);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+
+  li:not(.empty):hover {
+    border-color: var(--line-strong);
+    box-shadow: 0 12px 28px rgba(32, 45, 75, 0.08);
+    transform: translateY(-1px);
+  }
+
+  li input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+
+  .body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .title {
+    word-break: break-word;
+    line-height: 1.45;
+  }
+
+  li.done {
+    background: #fafbfc;
+  }
+
+  li.done .title {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .due {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--muted);
+    background: #f6f7f9;
+    border-radius: 999px;
+    padding: 3px 8px;
+  }
+
+  .due.overdue {
+    color: var(--overdue);
+    background: #fff0f1;
+    font-weight: 700;
+  }
+
+  li.done .due {
+    color: var(--muted);
+    background: #f1f2f4;
+    font-weight: normal;
+  }
+
+  .delete {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+
+  .delete:hover {
+    color: var(--overdue);
+    background: #fff0f1;
+  }
+
+  .empty {
+    display: block;
+    text-align: left;
+    color: var(--muted);
+    padding: 16px 24px;
+    background: var(--accent-soft);
+    border: 1px dashed #cfdafe;
+    box-shadow: none;
+    font-size: 14px;
+  }
+
+  @media (max-width: 420px) {
+    body {
+      padding-top: 32px;
+    }
+
+    .add-form {
+      border-radius: 14px;
+    }
+
+    .add-form input[type="text"],
+    .add-form input[type="date"],
+    button.add {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>할 일 목록</h1>
+      <p class="subtitle">오늘 처리할 일을 가볍게 정리해 보세요.</p>
+    </header>
+
+    <form class="add-form" id="addForm">
+      <input type="text" id="titleInput" placeholder="할 일을 입력하세요" autocomplete="off" required>
+      <input type="date" id="dueInput" aria-label="기한">
+      <button type="submit" class="add">추가</button>
+    </form>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "claude-todos";
+    const listEl = document.getElementById("list");
+    const form = document.getElementById("addForm");
+    const titleInput = document.getElementById("titleInput");
+    const dueInput = document.getElementById("dueInput");
+
+    let todos = load();
+
+    function load() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    function todayStr() {
+      const d = new Date();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${d.getFullYear()}-${m}-${day}`;
+    }
+
+    function formatDue(due) {
+      if (!due) return null;
+      const today = todayStr();
+      const diff = (new Date(due) - new Date(today)) / 86400000;
+      let label = `기한 ${due}`;
+      if (diff === 0) label += " (오늘)";
+      else if (diff < 0) label += ` (${-diff}일 지남)`;
+      else if (diff === 1) label += " (내일)";
+      else label += ` (${diff}일 남음)`;
+      return { label, overdue: diff < 0 };
+    }
+
+    function render() {
+      listEl.innerHTML = "";
+      if (todos.length === 0) {
+        const li = document.createElement("li");
+        li.className = "empty";
+        li.textContent = "할 일이 없습니다. 새로 추가해 보세요!";
+        listEl.appendChild(li);
+        return;
+      }
+
+      todos.forEach((todo) => {
+        const li = document.createElement("li");
+        if (todo.done) li.classList.add("done");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = todo.done;
+        checkbox.addEventListener("change", () => {
+          todo.done = checkbox.checked;
+          save();
+          render();
+        });
+
+        const body = document.createElement("div");
+        body.className = "body";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = todo.title;
+        body.appendChild(title);
+
+        const dueInfo = formatDue(todo.due);
+        if (dueInfo) {
+          const due = document.createElement("span");
+          due.className = "due" + (dueInfo.overdue && !todo.done ? " overdue" : "");
+          due.textContent = dueInfo.label;
+          body.appendChild(due);
+        }
+
+        const del = document.createElement("button");
+        del.className = "delete";
+        del.textContent = "×";
+        del.title = "삭제";
+        del.addEventListener("click", () => {
+          todos = todos.filter((t) => t.id !== todo.id);
+          save();
+          render();
+        });
+
+        li.append(checkbox, body, del);
+        listEl.appendChild(li);
+      });
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const title = titleInput.value.trim();
+      if (!title) return;
+      todos.push({
+        id: Date.now() + Math.random(),
+        title,
+        due: dueInput.value || null,
+        done: false,
+      });
+      save();
+      titleInput.value = "";
+      dueInput.value = "";
+      titleInput.focus();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
