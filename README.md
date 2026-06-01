@@ -19,7 +19,7 @@
 
 | 영역 | 사용 기술 |
 |------|-----------|
-| 프레임워크 | Next.js 15 (App Router) |
+| 프레임워크 | Next.js 16 (App Router) |
 | 언어 | TypeScript (strict) |
 | 스타일 | Tailwind CSS v4 |
 | UI | shadcn/ui · lucide-react |
@@ -29,11 +29,11 @@
 
 ## 시작하기
 
-> 사전 요구: Node.js 18.18+ 와 [pnpm](https://pnpm.io) (npm/yarn도 가능)
+> 사전 요구: Node.js 20+ 와 npm (pnpm/yarn도 가능)
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 브라우저에서 http://localhost:3000 접속.
@@ -41,8 +41,8 @@ pnpm dev
 ### 빌드 / 검사
 
 ```bash
-pnpm build    # 프로덕션 빌드
-pnpm lint     # ESLint
+npm run build    # 프로덕션 빌드
+npm run lint     # ESLint
 ```
 
 ## 프로젝트 구조

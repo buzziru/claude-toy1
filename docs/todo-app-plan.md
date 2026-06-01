@@ -33,7 +33,7 @@
 
 | 영역 | 선택 | 비고 |
 |------|------|------|
-| 프레임워크 | Next.js 15 (App Router) | RSC 기본, `app/` 디렉터리 |
+| 프레임워크 | Next.js 16 (App Router) | RSC 기본, `app/` 디렉터리 (구현 시점 최신) |
 | 언어 | TypeScript (strict) | `strict: true` |
 | 스타일 | Tailwind CSS v4 | shadcn/ui가 사용하는 토큰 기반 |
 | UI 컴포넌트 | shadcn/ui | Radix 기반, 코드 복사형(의존성 X) |

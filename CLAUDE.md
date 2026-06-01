@@ -12,13 +12,13 @@
 
 ## 기술 스택
 
-- **Next.js 15 (App Router)** — 리포 **루트**에 구성
+- **Next.js 16 (App Router, Turbopack)** — 리포 **루트**에 구성
 - **TypeScript** (`strict: true`)
 - **Tailwind CSS v4**
-- **shadcn/ui** (Radix 기반, 코드 복사형) + `lucide-react`
-- **next-themes** (다크 모드), **date-fns** (날짜 계산), **sonner** (토스트)
-- 상태: React 커스텀 훅(`useTodos`) + `localStorage` — 외부 상태 라이브러리 미사용
-- 패키지 매니저: **pnpm** 권장
+- **shadcn/ui** (Base UI 기반, 코드 복사형) + `lucide-react`
+- **next-themes** (다크 모드), **date-fns** (날짜 포맷), **sonner** (토스트)
+- 상태: `useTodos` 훅이 `useSyncExternalStore`로 `localStorage`를 외부 스토어로 구독 — 외부 상태 라이브러리 미사용
+- 패키지 매니저: **npm** (corepack 권한 이슈로 pnpm 대신 사용)
 
 ## 디렉터리 구조
 
